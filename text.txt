@@ -1,0 +1,8 @@
+const [{name, alpha2Code, region}] = brazil
+
+const {name:0, alpha2Code:0, region:0} = brazil
+
+
+////////////////////////////////
+
+region, flag
