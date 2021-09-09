@@ -15,11 +15,12 @@ searchButton.addEventListener('click', () => {
 
 
 //https://restcountries.eu/rest/v2/all
+//https://restcountries.eu/rest/v2/name/${pais}
+//https://restcountries.eu/rest/v2/alpha?codes={code} - pega um array com as infos do code informado (exemplo: BRA, USA)
 const req = async (pais) => {
   try {
     const response = await axios.get(`https://restcountries.eu/rest/v2/name/${pais}`)
-    const ourResponse = await response.data.slice(0, 249)
-    /* console.log(ourResponse) */
+    const ourResponse = response.data
     console.log(ourResponse)
     showSearch(ourResponse)
   } catch(e) {
@@ -28,8 +29,17 @@ const req = async (pais) => {
 }
 
 const showSearch = (response) => {
-  const [{name, alpha2Code, region, flag}] = response
-  console.log(name, alpha2Code, region, flag)
+  const [{name, alpha2Code, region, flag, currencies, population, translations}] = response
+  const [{code}] = currencies
+
+
+
+  const [{br, pt}] = translations //if(br=== null) {exibe pt} else exibe br
+/*const [{currencies.code: currency}] = response
+  ----
+  const felipe = currencies[0].code
+  console.log(felipe); */
+  console.log(name, alpha2Code, region, flag, code)
 
   const divCards = document.querySelector('.newCards')
 
@@ -48,10 +58,10 @@ const showSearch = (response) => {
   const cardImg = document.createElement('img')
   cardImg.setAttribute('src', `${flag}`)
 
+  divCards.appendChild(cardImg)
   divCards.appendChild(cardName)
   divCards.appendChild(cardAlpha2Code)
   divCards.appendChild(cardRegion)
-  divCards.appendChild(cardImg)
 }
 
 /* const regionSelect = (arr) => {
