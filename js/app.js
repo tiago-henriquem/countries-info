@@ -19,7 +19,7 @@ searchButton.addEventListener('click', () => {
 //https://restcountries.eu/rest/v2/alpha?codes={code} - pega um array com as infos do code informado (exemplo: BRA, USA)
 const req = async (pais) => {
   try {
-    const response = await axios.get(`https://restcountries.eu/rest/v2/name/${pais}`)
+    const response = await axios.get(`https://restcountries.eu/rest/v2/all`)
     const ourResponse = response.data
     console.log(ourResponse)
     showSearch(ourResponse)
@@ -30,38 +30,38 @@ const req = async (pais) => {
 
 const showSearch = (response) => {
   const [{name, alpha2Code, region, flag, currencies, population, translations}] = response
-  const [{code}] = currencies
-
-
-
-  const [{br, pt}] = translations //if(br=== null) {exibe pt} else exibe br
-/*const [{currencies.code: currency}] = response
-  ----
-  const felipe = currencies[0].code
-  console.log(felipe); */
-  console.log(name, alpha2Code, region, flag, code)
-
-  const divCards = document.querySelector('.newCards')
-
-  const cardName = document.createElement('p')
-  let text = document.createTextNode(name)
-  cardName.appendChild(text)
   
-  const cardAlpha2Code = document.createElement('p')
-  text = document.createTextNode(alpha2Code)
-  cardAlpha2Code.appendChild(text)
+  const [{code}] = currencies
+  const [{br, pt}] = translations
+  
+  for(let i in response) {
+    const [{flag, name, currencies/* , borders, population, translations, latlng */}] = response
+    const [{code}] = currencies
 
-  const cardRegion = document.createElement('p')
-  text = document.createTextNode(region)
-  cardRegion.appendChild(text)
+    console.log(flag, name, code)
 
-  const cardImg = document.createElement('img')
-  cardImg.setAttribute('src', `${flag}`)
+    const divCards = document.querySelector('.cards')
 
-  divCards.appendChild(cardImg)
-  divCards.appendChild(cardName)
-  divCards.appendChild(cardAlpha2Code)
-  divCards.appendChild(cardRegion)
+    const divCountry = document.createElement('div')
+    divCountry.setAttribute('class', 'divCountry')
+
+    const cardImg = document.createElement('img')
+    cardImg.setAttribute('src', `${flag}`)
+    cardImg.setAttribute('class', 'imgCards')
+
+    const cardName = document.createElement('p')
+    const text1 = document.createTextNode(name)
+    cardName.appendChild(text1)
+
+    const cardCode = document.createElement('p')
+    const text2 = document.createTextNode(code)
+    cardCode.appendChild(text2)
+
+    divCountry.appendChild(cardImg)
+    divCountry.appendChild(cardName)
+    divCountry.appendChild(cardCode)
+    divCards.appendChild(divCountry)
+  }
 }
 
 /* const regionSelect = (arr) => {
